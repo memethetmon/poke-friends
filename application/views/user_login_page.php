@@ -49,38 +49,10 @@
       $(document).ready(function() {
           $('#dateRangePicker')
               .datepicker({
-                  format: 'mm/dd/yyyy',
-                  startDate: '01/01/2010',
-                  endDate: '12/30/2020'
+                  format: 'yyyy/mm/dd',
+                  startDate: '2010/01/01',
+                  endDate: '2020/12/30'
               })
-              .on('changeDate', function(e) {
-                  // Revalidate the date field
-                  $('#dateRangeForm').formValidation('revalidateField', 'date');
-              });
-
-          $('#dateRangeForm').formValidation({
-              framework: 'bootstrap',
-              icon: {
-                  valid: 'glyphicon glyphicon-ok',
-                  invalid: 'glyphicon glyphicon-remove',
-                  validating: 'glyphicon glyphicon-refresh'
-              },
-              fields: {
-                  date: {
-                      validators: {
-                          notEmpty: {
-                              message: 'The date is required'
-                          },
-                          date: {
-                              format: 'MM/DD/YYYY',
-                              min: '01/01/2010',
-                              max: '12/30/2020',
-                              message: 'The date is not a valid'
-                          }
-                      }
-                  }
-              }
-          });
       });
     </script>
   </head>
@@ -154,8 +126,7 @@
 	        <label class="col-xs-3 control-label">Date of Birth:</label>
 	        <div class="col-xs-5 date">
 	            <div class="input-group input-append date" id="dateRangePicker">
-	                <input type="text" class="form-control" name="date" placeholder="yyyy/mm/dd"/>
-	                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+	                <input type="date" class="form-control" name="dob" />
 	            </div>
 	        </div>
           <input type="hidden" name="action" value="register" />

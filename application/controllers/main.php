@@ -35,8 +35,7 @@ class Main extends CI_Controller {
 		$this->form_validation->set_rules('password', 'Password', 'min_length[8]|
 required');
 		$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'matches[password]|required');
-		$this->form_validation->set_rules('dob', 'DOB', 'regex_match[^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$]
-'); 
+		$this->form_validation->set_rules('dob', 'DOB','required'); 
 
 		if($this->form_validation->run() === FALSE)
 		{
@@ -61,27 +60,34 @@ required');
 		}
     }
     //simple profile page of a user
-    public function poke($pokee=-1)
+    public function poke($pokee = -1)
     {
-        if($this->session->userdata('currentUser') || $pokee > 0)
+        if($this->session->userdata('currentUser'))
         {
         	$data['user'] = ["user" => $this->session->userdata("currentUser")];
 
         	$this->load->model('Poke');
-        	if ($pokee) {
-        		$poker = $this->Poke->addPoke($pokee);
-        	}
-        	$data['pokers'] = $this->Poke->get_poke_by_userID($data['user']['user']['id']);
+
+            // $data['pokes'] = $this->Poke->pokeList($data['user']['user']['id']);
+
+            if ($pokee >= 0)
+            {
+                $this->Poke->addPoke($data['user']['user']['id'], $pokee);
+            }
+        	$data['show_pokers'] = $this->Poke->get_poke_by_userID($data['user']['user']['id']);
+
         	$data['counts'] = $this->Poke->get_count_by_userID($data['user']['user']['id']);
 
-        	$this->load->model('User');
-        	$data['pokees'] = $this->User->displayOtherUsers($data['user']['user']['id']);
+            $data['pokes'] = $this->Poke->pokeList($data['user']['user']['id']);
+            // var_dump($data['pokes']);
+            // die();
 
         	$this->load->view('pokeView', $data);
         }
         else
             redirect("/users/login");
     }
+
     //logout the student
     public function logout()
     {

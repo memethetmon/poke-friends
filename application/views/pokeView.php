@@ -40,33 +40,24 @@
 				box-shadow: 2px 2px purple;
 			}
 		</style>
-		<script type="text/javascript">
-			$(document).ready(function(){
-                $('#poke').click( function() {
-                    var counter = $('#poke').val();
-                    counter++ ;
-                    $('#poke').val(counter);
-                });
-            });
-        </script>
 	</head>
 	<body>
 		<div id="container">
 			<div id="header">
 				<div id="route">
-					<a href="main/logout">Logout</a>
+					<a href="/main/logout">Logout</a>
 				</div>
 			</div>
 			<h4>Welcome, <?= $user['user']['alias'] ?></h4>
-			<p><?= $counts['poke_count'] ?> people poked you!</p>
+			<p><?= $counts[0]['poke_count'] ?> people poked you!</p>
 			<div id="poker">
-				<?php if ($pokers)
-				{
-					foreach ($pokers as $poker)
+				<?php
+					foreach ($show_pokers as $poker)
 					{
-						echo $poker['alias'] . " poked you " . $poker['poke_count'] . " times.<br />";
+						if($poker['poke_count'] > 0){
+							echo $poker['poker_alias'] . " poked you " . $poker['poke_count'] . " times.<br />";
+						}
 					}
-				}
 				?>
 			</div>
 			<p>People you may want to poke: </p>
@@ -81,19 +72,21 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			    	<tr class="success">
-			    		<?php foreach ($pokees as $pokee) { ?>
-				        	<td><?= $pokee['name'] ?></td>
-				        	<td><?= $pokee['alias'] ?></td>
-				        	<td><?= $pokee['email'] ?></td>
-				        	<td><?php echo $pokee['poke_count']; ?></td>
+			    	<?php foreach ($pokes as $poke) { ?>
+			    	<form action="/main/poke/<?= $poke['id'] ?>" method="post">
+			    		<tr class="success">
+				        	<td><?= $poke['name'] ?></td>
+				        	<td><?= $poke['alias'] ?></td>
+				        	<td><?= $poke['email'] ?></td>
+				        	<td><?= $poke['poke_count'] ?></td>
 				        	<td>
-				        		<button <a id ="poke" href="/main/poke/counter" value= 0; ></a>Poke!</button>
+				        		<input type="submit" value="Poke!">
 				        	</td>
-				        	<?php
-				        }
-				        ?>
-			    	</tr>
+			    		</tr>
+			    	</form>
+			    	<?php
+			    	}
+			    	?>
 			    </tbody>
 			</table>
 		</div>
